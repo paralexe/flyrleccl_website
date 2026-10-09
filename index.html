@@ -102,7 +102,7 @@
 				</ul>
 			</ul>
 		</section>
-		<section id="benchmark">
+		<div id="benchmark">
 			<h2>Benchmark Results</h2>
 			<section data-atg="sections" data-atid="YACCLAB_benchmark" data-ate="view">
 				<h3>YACCLAB Benchmark</h3>
@@ -203,7 +203,7 @@
 					<li><span class="text-bold">5.25x Speedup vs OpenCV:</span> Even with the <span class="text-bold">2nd-order moments</span> extraction, FlyRLECCL outperforms less complete in terms of returned statistic indicators <code>cv::connectedComponentsWithStats</code> method of OpenCV by <span class="text-bold">more than 5 times</span> (<span class="text-bold">692 MPix/s</span> vs. <span class="text-bold">131 MPix/sec</span>).</li>
 				</ul>
 			</section>
-		</section>
+		</div>
 		<section id="comparison" data-atg="sections" data-atid="comparison_table" data-ate="view">
 			<h2>Architectural Comparison: FlyRLECCL vs. OpenCV</h2>
 			<table>
@@ -286,7 +286,7 @@
 			</ul>
 			<p>By exposing these granular states, <span class="text-bold">Resume Mode</span> provides system engineers with the precise telemetry needed to build robust, flexible, adaptive, and highly deterministic processing pipelines without relying on rigid worst-case constraints or reallocation inside the hot loop.</p>
 		</section>
-		<section id="api" data-atg="" data-atid="" data-ate="">
+		<section id="api" data-atg="sections" data-atid="integration" data-ate="view">
 			<h2>Integration-Ready: Simple C99 API</h2>
 			<p>Integrating FlyRLECCL into your proprietary software or hardware pipeline takes less than an hour:</p>
 			<ul>
@@ -300,7 +300,7 @@
 				<li>This allows a single multi-threaded firmware or software system to concurrently process different sensor streams—routing low-resolution or layout-constrained frames through the ultra-lean <span class="text-bold">Lite</span> engine while simultaneously feeding high-resolution data to the <span class="text-bold">Standard</span> core, with zero cross-talk or code-duplication overhead.</li>
 			</ul>
 		</section>
-		<section id="roadmap" data-atg="" data-atid="" data-ate="">
+		<section id="roadmap" data-atg="sections" data-atid="roadmap" data-ate="view">
 			<h2>Project Roadmap</h2>
 			<ul>
 				<li><span class="text-bold">Short-Term Feature Expansion</span></li>

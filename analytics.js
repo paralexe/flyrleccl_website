@@ -27,9 +27,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	function callGtag(elementGroup, actionType, extraParams = {}) {
 		const eventName = `${elementGroup}_${actionType}`;
 		
+		const atid = extraParams.atid || elementGroup;
+		delete extraParams.atid;
+				
 		gtag('event', eventName, {
 		  'element_group': elementGroup,
 		  'interaction_type': actionType,
+		  'element_id': atid, 
 		  ...extraParams
 		});
 	}
@@ -126,23 +130,23 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (viewTrackableElements.length !== 0) {
 		const viewObserver = new IntersectionObserver((entries) => {
 			entries.forEach(entry => {
-				const element = entry.target;
+				const el = entry.target;
 
 				if (entry.isIntersecting) {
 					// The section has entered the screen — we are recording the exact moment in time.
-					viewStartTimes.set(element, performance.now());
+					viewStartTimes.set(el, performance.now());
 				} else {
 					// The section emerged from the screen.
-					const startTime = viewStartTimes.get(element);
+					const startTime = viewStartTimes.get(el);
 
 					if (startTime) {
 						// Calculate the viewing time in seconds (rounded to one decimal place).
 						const durationSeconds = parseFloat(((performance.now() - startTime) / 1000).toFixed(1));
-						viewStartTimes.delete(element); // Очищаем метку
+						viewStartTimes.delete(el); // Очищаем метку
 
 						// Send the event only if the viewing time exceeds 1 second (protection against rapid scrolling).
 						if (durationSeconds >= 1.0) {
-							const res = validateTarget(element, 'view', {
+							const res = validateTarget(el, 'view', {
 								time_spent_seconds: durationSeconds
 							});
 
@@ -154,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 			});
 		}, {
-			threshold: 0.5 // A section is considered "viewable" when at least 50% of it is visible.
+			threshold: 0.1 // A section is considered "viewable" when at least 50% of it is visible.
 		});
 
 		// Subscribe all discovered sections for monitoring.
