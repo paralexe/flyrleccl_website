@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FlyRLECCL — high-performance RLE based Connected Component labeling & analysis Library</title>
+	<link rel="stylesheet" href="style.css">
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "SoftwareApplication",
+	  "name": "FlyRLECCL",
+	  "operatingSystem": "Windows, Linux",
+	  "applicationCategory": "DeveloperApplication",
+	  "description": "High-performance zero-allocation Connected Component Labeling and Analysis (CCL/CCA) C99 library, outperforming OpenCV up to 8x.",
+	  "offers": {
+		"@type": "Offer",
+		"price": "0.00",
+		"priceCurrency": "USD",
+		"description": "B2B Royalty-Free Licensing available"
+	  },
+	  "featureList": "Zero-allocation architecture, C99 compliant, RLE native pipeline, standard telemetry extraction (Area, BBox, Moments)."
+	}
+	</script>	
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script src="analytics.js"></script>
+
+<body>
+
+	<header>
+		<nav class="mobile-nav">
+			<input type="checkbox" id="burger-toggle" class="burger-toggle">
+			<div class="nav-header">
+				<h1>FlyRLECCL</h1>
+		  
+				<label for="burger-toggle" class="burger-button">
+					<span></span>
+					<span></span>
+					<span></span>
+				</label>
+			</div>
+			
+			<ul class="menu-links">
+				<li><a href="#main" data-atg="menu" data-atid="main" data-ate="click">The Core Value of FlyRLECCL</a></li>
+				<li><a href="#benchmark" data-atg="menu" data-atid="benchmark" data-ate="click">Benchmark Results</a></li>
+				<li><a href="#comparison" data-atg="menu" data-atid="comparison" data-ate="click">Architectural Comparison versus OpenCV</a></li>
+				<li><a href="#hardware" data-atg="menu" data-atid="hardware" data-ate="click">Low-Level Optimization & Hardware Efficiency</a></li>
+				<li><a href="#memory" data-atg="menu" data-atid="memory" data-ate="click">Predictive Memory Scaling & "Resume Mode"</a></li>
+				<li><a href="#api" data-atg="menu" data-atid="api" data-ate="click">Integration-Ready: Simple C99 API</a></li>
+				<li><a href="#roadmap" data-atg="menu" data-atid="roadmap" data-ate="click">Project Roadmap</a></li>
+				<li><a href="#licensing" data-atg="menu" data-atid="licensing" data-ate="click">Commercial Licensing & Integration</a></li>
+				<li><a href="#evaluation" data-atg="menu" data-atid="evaluation" data-ate="click">Evaluate FlyRLECCL on Hardware</a></li>
+			</ul>
+		</nav>
+		<h5>RLE based Connected Component analysis Library</h5>
+	</header>
+
+	<main>
+		<section>
+			<h4>5-6× Faster than OpenCV in WithStats Mode.</h4>
+			<h4>C99. Zero Allocations. Zero Dependencies.</h4>
+			<h4>Complete & Flexible Determinism.</h4>
+			<p>FlyRLECCL is a production-ready, dependency-free C99 SDK engineered specifically for mission-critical embedded vision, smart cameras, medical imaging, and high-throughput document processing. It replaces bloated, non-deterministic frameworks with a hyper-optimized, single-pass RLE engine.</p>
+		</section>
+		<section id="main" data-atg="sections" data-atid="main" data-ate="view">
+			<h2>The Core Value: Why Technical Buyers Choose FlyRLECCL</h2>
+			<p>When integrating Connected Component Analysis (CCA) into real-time production systems, modern engineering teams face a strict trade-off between throughput and memory reliability. FlyRLECCL eliminates this compromise.</p>
+			<h3>Hardcore Performance vs. OpenCV (WithStats)</h3>
+			<p>Tested on industry-standard benchmarks (YACCLAB and Tobacco800 datasets), FlyRLECCL drastically reduces CPU cycle consumption:</p>
+			<ul>
+			  <li>Medical Dataset: <span class="text-bold">5.0×</span> faster than OpenCV <code>cv2::connectedComponentsWithStats</code></li>
+			  <li>Tobacco800 Dataset (Documents): <span class="text-bold">6.2×</span> faster than OpenCV <code>cv2::connectedComponentsWithStats</code></li>
+			  <li>Peak Performance: <span class="text-bold">Up to 8.0×</span> faster than OpenCV execution on high-density, real-world industrial frames</li>
+			</ul>
+			<h3>Component Statistics Are Customizable and Virtually Free</h3>
+			<p>In standard computer vision workflows, enabling geometric statistics often introduces a severe performance penalty. For instance, moving from pure labeling to feature extraction in OpenCV results in a massive throughput degradation on realistic production workloads. <a href="#benchmark">Benchmark</a> data reveals a <span class="text-bold">191.5% overhead on the Medical dataset</span> (from YACCLAB) and a <span class="text-bold">221.0% overhead</span> on <a href="https://www.industrydocuments.ucsf.edu/tobacco/" target="_blank" rel="noopener noreferrer">the Tobacco800 dataset</a> (via UCSF Truth Tobacco Industry Documents) just to compute basic component metrics—a systematic behavior widely documented by developers in standard profiling scenarios (e.g., <a href="https://stackoverflow.com/questions/52260829/">Stack Overflow #52260829</a>)</p>
+			<p>FlyRLECCL completely rearchitects this step. By computing topological and spatial metrics natively at the interval (RLE) level during the core extraction phase, the computational "tax" is drastically minimized. Moving from pure labeling to feature extraction introduces a negligible overhead of <span class="text-bold">only</span>:</p>
+			<ul>
+				<li><span class="text-bold">4% to 10%</span> for Base Statistics</li>
+				<li><span class="text-bold">6% to 12%</span> for Standart Statistics</li>
+			</ul>
+			<p class="text-italic">More details on the benchmark results are presented in the section <a href="#benchmark">Benchmarks</a>.</p>
+			<p>FlyRLECCL delivers a comprehensive analytical dataset out-of-the-box, turning what is traditionally a heavy secondary computing step into an immediate, zero-allocation asset:</p>
+			<ul>
+				<li>Base Statistic Layout (Base Statistics):</li>
+				<ul>
+					<li>Number of Runs <span class="text-bold">(Unique RLE metric)</span></li>
+					<li>Component Area</li>
+					<li>Bounding Boxes (BBox)</li>
+				</ul>
+				<li>Standart Statistic Layout:</li>
+				<ul>
+					<li>Base Statistics</li>
+					<li>First-Order Moments (<span class="text-italic">M</span><sub>10</sub> & <span class="text-italic">M</span><sub>01</sub>) for exact barycenter calculation</li>
+				</ul>
+				<li>Extended Statistic Layout:</li>
+				<ul>
+					<li>Standart Statistics</li>
+					<li>Second-Order Moments (<span class="text-italic">M</span><sub>20</sub>, <span class="text-italic">M</span><sub>11</sub> & <span class="text-italic">M</span><sub>02</sub>) for exact barycenter calculation</li>
+				</ul>
+			</ul>
+		</section>
+		<section id="benchmark">
+			<h2>Benchmark Results</h2>
+			<section data-atg="sections" data-atid="YACCLAB_benchmark" data-ate="view">
+				<h3>YACCLAB Benchmark</h3>
+				<p>Standard YACCLAB benchmarks measure performance up to the final generation of a dense label map, which is the primary and definitive output of traditional raster-based CCL algorithms. However, the core FlyRLECCL architecture computes component statistics without ever expanding data into a heavy dense array. To ensure a rigorous and transparent performance evaluation, the <span class="text-bold">YACCLAB Average Runtime Tests with Steps</span> protocol was utilized. This approach isolates the net execution time of individual algorithmic stages (excluding allocation and deallocation overhead).</p>
+				<p>To evaluate FlyRLECCL within identical formatting constraints (<span class="text-bold">mapOut mode</span>), the net total time required to return a standard dense label map was measured (represented by the <span class="text-bold">FlyRLECCL mapOut</span> bar on the plot below). Crucially, to demonstrate the true efficiency of the RLE-native workflow, the net execution time required to yield the final Array of Structures containing labeled runs was captured as a standalone first-step metric (represented by the <span class="text-bold">FlyRLECCL runsOut</span> bar). This methodology shifts the benchmark focus from merely producing identical output formats to evaluating the time required to achieve identical conceptual results — since both labeled runs and dense label maps contain the complete, lossless information regarding the <span class="text-bold">exact pixel composition</span> of each image component.</p>
+				<p>For visual clarity and cross-dataset readability, all performance metrics within the YACCLAB benchmark were normalized against the baseline execution time of FlyRLECCL in <span class="text-bold">mapOut mode</span>. This normalization eliminates the significant variance in absolute execution times caused by inherently different dataset characteristics, establishing a stable reference point for relative performance evaluation.</p>
+				<p>The consolidated performance metrics across all evaluated datasets and algorithms are presented in the relative benchmark chart below:</p>
+				<img id="yacclab_benchmark_plot" src="images/FlyRLECCL_Yacclab.jpg" alt="Summary results of the YACCLAB tests"/>
+				<p class="text-bold">Performance Analysis: mapOut Mode</p>
+				<p>When evaluated strictly within the <span class="text-bold">mapOut</span> formatting constraints — which natively favor traditional raster-based architectures — FlyRLECCL demonstrates highly competitive scalar throughput. On the majority of standard YACCLAB datasets (<span class="text-italic">hamlet</span>, <span class="text-italic">medical</span>, and <span class="text-italic">3Dpes</span>), the performance deficit of FlyRLECCL remains limited to only three top-tier raster algorithms. Specifically, the processing throughput is trailing <span class="text-bold">DRAG</span> and <span class="text-bold">Spaghetti</span> by an average of <span class="text-bold">20%</span>, and <span class="text-bold">Tagliatelle</span> by approximately 33%. A more pronounced gap is confined exclusively to the <span class="text-italic">fingerprints</span> dataset, where the execution overhead reaches up to <span class="text-bold">53%</span> relative to Tagliatelle.</p>
+				<p>To contextualize these metrics within the RLE domain, LSL_RLE (the historically recognized leader among RLE-based algorithms) exhibits a significantly wider performance gap relative to raster alternatives across nearly all benchmarks. On average, across the <span class="text-italic">hamlet</span>, <span class="text-italic">medical</span>, and <span class="text-italic">3Dpes</span> datasets, Tagliatelle outperforms LSL_RLE by a substantial <span class="text-bold">118%</span> in <span class="text-bold">mapOut mode</span>.</p>
+				<p>The only inversion of this trend occurs exclusively within the <span class="text-italic">fingerprints</span> dataset, where LSL_RLE displays a slight throughput advantage over FlyRLECCL, leading by approximately <span class="text-bold">11% to 12%</span> in dense map generation.</p>
+				<p class="text-bold">FlyRLECCL Performance Analysis: runsOut Mode vs mapOut Mode</p>
+				<p>Comparing <span class="text-bold">runsOut mode</span> with <span class="text-bold">mapOut mode</span> clearly quantifies the performance penalty introduced by dense map reconstruction. Reconstructing the full pixel label map from the finalized, labeled Array of Structures (AoS) increases total processing time by an average of <span class="text-bold">36%</span> on the <span class="text-italic">3Dpes</span>) dataset. For all other evaluated datasets, this formatting overhead escalates significantly, surpassing <span class="text-bold">50%</span> and peaking at a <span class="text-bold">62%</span> increase in execution time on the <span class="text-italic">fingerprints</span> dataset.</p>
+				<p>These metrics demonstrate that bypassing dense matrix reconstruction allows FlyRLECCL to retain substantial computational resources that are traditionally wasted during the final formatting stages of raster-based pipelines.</p>
+				<p class="text-bold">Performance Analysis: FlyRLECCL runsOut Mode vs Raster Baseline</p>
+				<p>When comparing <span class="text-bold">FlyRLECCL</span> operating <span class="text-bold">in its native runsOut mode</span> (bypassing map reconstruction entirely) against the <span class="text-bold">native execution times of raster-based algorithms</span>, the architectural advantage becomes clear. In its native configuration, FlyRLECCL delivers higher throughput than every single evaluated raster YACCLAB algorithm. Specifically, it outperforms the world's leading raster implementation (<span class="text-bold">Tagliatelle</span>) by an average of <span class="text-bold">8%</span> across all datasets, ranging from a <span class="text-bold">3.3%</span> speedup on fingerprints to an <span class="text-bold">11.6%</span> performance advantage on the hamlet dataset.</p>
+				<p class="text-bold">Conclusion on YACCLAB Benchmarks</p>
+				<p>Ultimately, comparing the performance profiles of <span class="text-bold">runsOut</span> and <span class="text-bold">mapOut</span> modes demonstrates that dense map reconstruction introduces an unnecessary processing bottleneck for subsequent analysis. These metrics prove that by eliminating dense matrix inflation, FlyRLECCL preserves substantial computational resources that are traditionally wasted during the final formatting stages of raster-based pipelines.</p>
+			</section>
+			<section data-atg="sections" data-atid="OpenCV_benchmark_intro" data-ate="view">
+				<h3>Performance Benchmark: FlyRLECCL vs. OpenCV (With & Without Statistics)</h3>
+				<p>To evaluate the true computational overhead of component analysis and compare FlyRLECCL against established industry standards, an independent, high-precision benchmarking framework was developed.</p>
+				<p>In this evaluation, <span class="text-bold">FlyRLECCL</span> was pitted against <span class="text-bold">OpenCV 4.5.5-x64</span>—the recognized open-source standard for computer vision pipelines. To provide a fair and comprehensive architectural breakdown, both libraries were evaluated across different operational modes representing varying levels of telemetry extraction:</p>
+				<ul>
+					<li><span class="text-bold">OpenCV | No Stats:</span> Evaluated using <code>cv::connectedComponents</code>, returning only the baseline label matrix.</li>
+					<li><span class="text-bold">OpenCV | Standard Stats:</span> Evaluated using <code>cv::connectedComponentsWithStats</code>, which extracts the standard industry telemetry packet: <span class="text-italic">Area</span>, <span class="text-italic">Bounding Box (BBox)</span>, and <span class="text-italic">Centroids</span>.</li>
+					<li><span class="text-bold">FlyRLECCL | No Stats:</span> Operating in the native core <span class="text-bold">runsOut mode</span>, yielding only the labeled run structures.</li>
+					<li><span class="text-bold">FlyRLECCL | Base Stats:</span> Extracting <span class="text-italic">Area</span>, <span class="text-italic">BBox</span>, and an additional native RLE-specific parameter: <span class="text-italic">the amount of runs</span> per component (<code>n_runs</code>).</li>
+					<li><span class="text-bold">FlyRLECCL | Standard Stats:</span> Extracting all parameters from <span class="text-italic">Base Stats</span> plus <span class="text-italic">first-order moments</span>. This setup is functionally equivalent to <span class="text-bold">OpenCV's | Standard Stats</span>, as <span class="text-italic">centroids</span> are mathematically derived directly from <span class="text-italic">first-order moments</span>.</li>
+				</ul>
+				<p class="text-bold">Rigorous Testing Methodology</p>
+				<p>To ensure maximum reproducibility, eliminate OS-induced jitter (such as thread scheduling and background processes), and guarantee deterministic evaluation, the benchmark utilized a <span class="text-bold">multi-tier peak-extraction protocol</span>:</p>
+				<ol>
+					<li><span class="text-bold">Randomized Execution:</span> Images within each evaluated dataset were processed in a strictly randomized order across <span class="text-bold">10 independent macro-iterations</span>. This prevents the CPU from optimizing memory access paths based on predictable image sequences.</li>
+					<li><span class="text-bold">Hot-Loop Micro-Testing:</span> Within each macro-iteration, every individual image was processed inside a <span class="text-bold">hot loop of 30 consecutive execution passes</span>. The peak throughput (<span class="text-italic">Max MPix/sec</span>) was captured from this loop, isolating the algorithm’s performance from cold-start cache misses.</li>
+					<li><span class="text-bold">Absolute Peak Extraction:</span> For every image, the absolute maximum throughput achieved across all 10 independent macro-iterations was extracted.</li>
+					<li><span class="text-bold">Dataset-Wide Averaging:</span> The final metrics presented in the chart represent the dataset-wide average computed from these individual, isolated image absolute maximums.</li>
+				</ol>
+				<p class="text-bold">Environment & Compilation Flags</p>
+				<p>To guarantee a stable and reproducible execution profile, the entire benchmark was built and executed under the following strict environment constraints:</p>
+				<ul>
+					<li><span class="text-bold">Hardware Configuration:</span> Tested on a single core of an Intel Core i7 processor clocked at <span class="text-bold">2.0 GHz</span> with <span class="text-bold">6 GB of RAM</span>.</li>
+					<li><span class="text-bold">Operating System:</span> Windows 64-bit, locked into <span class="text-bold">High-Performance Power Mode</span> to eliminate CPU frequency throttling and power-saving latency spikes.</li>
+					<li><span class="text-bold">Compiler & Toolchain:</span> Compiled using the <span class="text-bold">MinGW</span> toolchain.</li>
+					<li><span class="text-bold">Optimization Flags:</span> Built with <code>-O3 -DNDEBUG</code> (automatically injected via CMake’s <code>Release</code> build type).</li>
+					<li><span class="text-bold">Strict Diagnostics:</span> Built with <code>-Wall -Wextra -Wpedantic</code> enabled via <code>target_compile_options</code> to ensure absolute C99 standard compliance and zero compiler warnings.</li>
+				</ul>
+				<p class="text-bold">Memory Management & Algorithm Details</p>
+				<p>Replicating the rigorous constraints of the YACCLAB framework, <span class="text-bold">all dynamic memory allocations and deallocations were excluded from the execution timers</span> to isolate net algorithmic throughput. However, a critical architectural distinction regarding OpenCV must be noted:</p>
+				<ol>
+					<li><span class="text-bold">FlyRLECCL Memory Isolation:</span> All working buffers were pre-allocated outside the benchmark loop, ensuring a strictly zero-allocation profile during the hot execution cycle.</li>
+					<li><span class="text-bold">OpenCV Memory Constraint:</span> While all output images and primary buffers for <code>cv::connectedComponents</code> and <code>cv::connectedComponentsWithStats</code> were pre-allocated and passed directly into the API to prevent mid-loop reallocations, OpenCV’s internal architecture mandates the dynamic allocation of a working buffer for its <span class="text-bold">parents table</span> on every call. Because OpenCV does not provide an API to pass an external pointer for this specific structure, this internal allocation overhead is inherently included in OpenCV's net execution time.</li>
+					<li><span class="text-bold">Default CCL Engine:</span> For all OpenCV evaluations, the default Connected Component Labeling algorithm was utilized. Starting with OpenCV version 4.5, this default is the <span class="text-bold">Spaghetti</span> algorithm.</li>
+					<li><span class="text-bold">High-Precision Timing:</span> Execution time was captured with sub-millisecond precision using the native Windows <span class="text-bold">QueryPerformanceCounter (QPC)</span> hardware timer via <code>QueryPerformanceFrequency</code>, eliminating any interference from system clock drifts or OS-level adjustments.</li>
+				</ol>
+			</section>
+			<section data-atg="sections" data-atid="OpenCV_benchmark_results1" data-ate="view">
+				<h3>Performance Benchmark 1 (Medical & Tobacco800 datasets)</h3>
+				<p>The consolidated throughput metrics across all evaluated datasets and operational modes for FlyRLECCL and OpenCV 4.5.5-x64 are presented in the benchmark chart below:</p>
+				<div><img id="opencv_benchmark_plot" src="images/FlyRLECCL_OpenCV.jpg" alt="Summary results of the comparison FlyRLECCL vs. OpenCV"/></div>
+				<p class="text-bold">1. Baseline (No Statistics Mode) Performance: FlyRLECCL vs. OpenCV</p>
+				<p>When operating in the baseline mode without telemetry extraction (<code>runsOut</code> for FlyRLECCL and <code>cv::connectedComponents</code> for OpenCV), the dataset-wide average metrics reveal a massive performance gap. FlyRLECCL demonstrates a <span class="text-bold">75% throughput advantage</span> on the <span class="text-italic">Medical</span> dataset (FlyRLECCL: 739.9 MPix/sec vs. OpenCV: 422.5 MPix/sec) and an <span class="text-bold">106% advantage</span> on <span class="text-italic">Tobacco800</span> (FlyRLECCL: 895.4 MPix/sec vs. OpenCV: 434.2 MPix/sec).</p>
+				<p>These findings yield three critical architectural insights:</p>
+				<ul>
+					<li><span class="text-bold">Validation of RLE Efficiency:</span> These real-world results align with the YACCLAB benchmarks, confirming that FlyRLECCL’s native RLE-structured output (<code>runsOut</code>) is inherently faster to generate than a raster algorithm's native dense label map.</li>
+					<li><span class="text-bold">The OpenCV Wrapper Overhead:</span> While the pure Spaghetti algorithm in YACCLAB maintained a tight race with FlyRLECCL (trailing by only 11.6% to 19.8% depending on the dataset), OpenCV’s implementation of the exact same algorithm suffers a massive <span class="text-bold">>50% performance overhead</span>. This heavy penalty is highly likely caused by the dynamic allocation of the internal <code>parents</code> working buffer within the execution loop, a constraint completely bypassed by FlyRLECCL's zero-allocation design.</li>
+					<li><span class="text-bold">Data Dependency vs. Uniform Latency:</span> The data demonstrates that OpenCV’s throughput remains rigidly uniform regardless of the image content. In contrast, FlyRLECCL’s performance is highly adaptive, showing a strong sensitivity to scene density and object morphology. Because <span class="text-italic">Medical</span> and <span class="text-italic">Tobacco800</span> feature distinctly different pixel distributions, FlyRLECCL dynamically capitalizes on RLE-friendly structures, maximizing execution speed where raster approaches remain locked in static iteration loops.</li>
+				</ul>
+				<p class="text-bold">2. Statistics Extraction Overhead: FlyRLECCL vs. OpenCV</p>
+				<p>Analyzing the execution penalty of enabling telemetry highlights the massive superiority of FlyRLECCL compared to OpenCV:</p>
+				<ul>
+					<li><span class="text-bold">FlyRLECCL (Base Stats):</span> Extracting <span class="text-italic">Area</span>, <span class="text-italic">BBox</span>, and <code>n_runs</code> introduces a near-negligible average overhead of only <span class="text-bold">9.85%</span> on the <span class="text-italic">Medical</span> dataset and drops to a mere <span class="text-bold">4.74%</span> on <span class="text-italic">Tobacco800</span>.</li>
+					<li><span class="text-bold">FlyRLECCL (Standard Stats):</span> Adding <span class="text-italic">first-order moments</span> (<code>M1</code>) shifts the overhead tightly to <span class="text-bold">11.69%</span> for <span class="text-italic">Medical</span> and <span class="text-bold">6.27%</span> for <span class="text-italic">Tobacco800</span>. This confirms that telemetry extraction within FlyRLECCL is highly optimized, keeping the primary scan execution path clean and fast.</li>
+				</ul>
+				<p>This confirms that telemetry extraction within FlyRLECCL is highly optimized, keeping the primary scan execution path clean and fast.</p>
+				<p>In stark contrast, OpenCV’s statistics extraction penalty is staggering and prohibitive, consistently exceeding the <span class="text-bold">200%</span> threshold:</p>
+				<ul>
+					<li><span class="text-bold">OpenCV (Standard Stats Wrapper Penalty):</span> Enabling statistics via <code>cv::connectedComponentsWithStats</code> inflicts a massive <span class="text-bold">224.22%</span> performance penalty on the <span class="text-italic">Medical</span> dataset and <span class="text-bold">220.96%</span> on <span class="text-italic">Tobacco800</span>.</li>
+				</ul>
+				<p>This data demonstrates that while extracting standard component statistics effectively triples OpenCV's execution time, FlyRLECCL processes the same analytics virtually for "free."</p>
+				<p class="text-bold">3. Final Performance Contrast: Standard Statistics Mode</p>
+				<p>When comparing both libraries with telemetry extraction enabled (FlyRLECCL <span class="text-bold">Standard Stats</span> vs. OpenCV <code>cv::connectedComponentsWithStats</code>), FlyRLECCL delivers its most substantial performance advantage:</p>
+				<ul>
+					<li><span class="text-bold">Medical Dataset:</span> FlyRLECCL outperforms OpenCV by a factor of <span class="text-bold">5.08×</span>.</li>
+					<li><span class="text-bold">Tobacco800 Dataset:</span> FlyRLECCL outperforms OpenCV by an average factor of <span class="text-bold">6.23×</span>, with peak performance differentials reaching up to <span class="text-bold">8.14×</span>.</li>
+				</ul>
+				<p>This benchmark of the FlyRLECCL's scalar module demonstrates that low-level algorithmic optimization can redefine performance boundaries without requiring specialized hardware upgrades or complex vectorization.</p>
+			</section>
+			<section data-atg="sections" data-atid="OpenCV_benchmark_results2" data-ate="view">
+				<h3>Performance Benchmark 2: xDocs Dataset & Extended Statistics</h3>
+				<div><img id="opencv_benchmark_plot" src="images/FlyRLECCL_OpenCV_xDocs_with_M2.jpg" alt="Summary results of the comparison FlyRLECCL vs. OpenCV"/></div>
+				<p>The benchmark results on the <span class="text-italic">xDocs</span> dataset generally align with the trends previously established across the <span class="text-italic">Medical</span> and <span class="text-italic">Tobacco800</span> datasets.</p>
+				<p>What is fundamentally new here are the performance metrics for the <span class="text-bold">Extended Statistics</span> mode—introducing support for 2nd-order central moments (<span class="text-italic">M</span><sub>20</sub>, <span class="text-italic">M</span><sub>11</sub>, <span class="text-italic">M</span><sub>02</sub>)—which has been added to the updated version of the FlyRLECCL core.</p>
+				<p class="text-bold">Key Insights for the Extended Statistics Mode:</p>
+				<ul>
+					<li><span class="text-bold">Negligible Moments Overhead:</span> Calculating <span class="text-bold">Extended Statistics</span>, including <span class="text-bold">2nd-order moments</span> (<span class="text-italic">M</span><sub>20</sub>, <span class="text-italic">M</span><sub>11</sub>, <span class="text-italic">M</span><sub>02</sub>) causes less then a <span class="text-bold">4% performance slowdown</span> (from 720.77 MPix/s when caclulating <span class="text-bold">Standart Statistics</span> to <span class="text-bold">692 MPix/s</span> on xDocs), compared to OpenCV's 3.1x slowdown just for <span class="text-bold">Standart Statistics</span> calculation.</li>
+					<li><span class="text-bold">5.25x Speedup vs OpenCV:</span> Even with the <span class="text-bold">2nd-order moments</span> extraction, FlyRLECCL outperforms less complete in terms of returned statistic indicators <code>cv::connectedComponentsWithStats</code> method of OpenCV by <span class="text-bold">more than 5 times</span> (<span class="text-bold">692 MPix/s</span> vs. <span class="text-bold">131 MPix/sec</span>).</li>
+				</ul>
+			</section>
+		</section>
+		<section id="comparison" data-atg="sections" data-atid="comparison_table" data-ate="view">
+			<h2>Architectural Comparison: FlyRLECCL vs. OpenCV</h2>
+			<table>
+				<thead>
+					<tr>
+					  <th class="col-1">Feature</th>
+					  <th class="col-2">OpenCV<br>(cv2::connectedComponentsWithStats)</th>
+					  <th class="col-3">FlyRLECCL<br><span>(with Standart Statistic Layout)</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					  <th>Execution Pattern</th>
+					  <td>Two-pass pixel dense scanning</td>
+					  <td>Two-pass RLE merge</td>
+					</tr>
+					<tr>
+					  <th>Data Layout of Labeling Results</th>
+					  <td>Dense Array of Labels</td>
+					  <td>Array of Structures (labeled runs)</td>
+					</tr>
+					<tr>
+					  <th>Dynamic Allocations</th>
+					  <td><span class="text-bold">Yes</span></td>
+					  <td><span class="text-bold">Strictly Zero</span> (Pre-allocated buffers)</td>
+					</tr>
+					<tr>
+					  <th>Memory Fragmentation Risk</th>
+					  <td>High (Unsuitable for critical embedded)</td>
+					  <td>None (100% Deterministic)</td>
+					</tr>
+					<tr>
+					  <th>Overhead on Standart Statistics</th>
+					  <td>Severe performance drop (<span class="text-bold">200-300%</span>)</td>
+					  <td>Minimal performance drop (<span class="text-bold">6% – 14%</span>)</td>
+					</tr>
+					<tr>
+					  <th>Native Count Metric</th>
+					  <td>No</td>
+					  <td><span class="text-bold"></span> (Built-in Parameter - Amount of Runs)</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section id="hardware" data-atg="sections" data-atid="hardware" data-ate="view">
+			<h2>Low-Level Optimization & Hardware Efficiency</h2>
+			<ul>
+				<li><span class="text-italic">For systems architects and embedded engineers who need to know exactly why it runs this fast:</span></li>
+				<h3>Cache-Centric Architecture & Explicit Stride Alignment</h3>
+				<li><span class="text-italic">Pure Scalar Optimization:</span> Fully branch-optimized core that achieves near-gigapixel throughput without relying on SIMD (AVX/NEON). It runs at peak efficiency on any legacy, low-power, or custom RISC-V/ARM Cortex-M processor lacking vector units.</li>
+				<li><span class="text-bold">Strict 64-Byte Alignment API Contract:</span>To eliminate cache line straddling and maximize CPU data bus utilization, FlyRLECCL operates via a strict memory alignment contract. The host application provides pre-allocated memory buffers aligned to 64-byte boundaries. The core engine processes these external pointers directly, ensuring zero-copy efficiency and perfect hardware optimization.</li>
+				<li><span class="text-bold">Ultra-Compact 16-Byte Layouts:</span>Base component statistics occupy just 16 bytes. Enabling First-Order Moments (M1: M10 & M01) adds exactly 16 bytes more. This spatial locality ensures the entire working dataset resides continuously within the fastest L1 CPU cache.</li>
+				<li><span class="text-bold">Standard & Lite Configurations:</span>The <span class="text-bold">Standard Edition</span> handles high-resolution industrial and medical frames. The <span class="text-bold">Lite Edition</span> is tailored for microcontrollers (256×256 frames); it halves internal datatype bit-depth, cutting SRAM footprint by 50%.</li>
+			</ul>
+		</section>
+		<section id="memory" data-atg="sections" data-atid="memory" data-ate="view">
+			<h2>Predictive Memory Scaling & "Resume Mode"</h2>
+			<p>Unlike video frames or image matrices, where dimensions are known and fixed in advance, the number of connected components is entirely unpredictable prior to execution. This introduces a critical architectural problem for embedded and real-time systems, forcing developers into a destructive trade-off.</p>
+			<p><span class="text-bold">The Static Allocation Dilemma:</span>Standard Computer Vision libraries force developers to budget memory for the catastrophic worst-case scenario (e.g., maximum noise), permanently locking down vast amounts of RAM that go unused 99% of the time.</p>
+			<h3>The Static Allocation Dilemma</h3>
+			<p>To maintain deterministic execution without runtime failures, developers are locked into a binary choice:</p>
+			<ul>
+				<li><span class="text-bold">Option A:</span> Allocate a massive buffer at startup sized for the catastrophic worst-case scenario (e.g., maximum high-frequency noise). This permanently captures vast amounts of RAM that remain unused 99% of the time, starving other system processes.</li>
+				<li><span class="text-bold">Option B:</span> Dynamically allocate memory inside the hot frame-processing loop based on the exact number of detected objects. This eliminates memory bloat but completely destroys real-time determinism due to heap fragmentation and random allocator latencies.</li>
+			</ul>
+			<h3>The FlyRLECCL Solution: Controlled Budgets and Actionable Telemetry</h3>
+			<p>FlyRLECCL completely resolves this dilemma by pairing a strict zero-allocation model with a specialized <span class="text-bold">Resume Mode</span> for component statistics collection. Instead of budgeting for impossible edge cases, system architects can aggressively minimize the active memory footprint by allocating a micro-buffer scaled to a tight, realistic confidence interval of expected components.</p>
+			<p>If scene complexity unexpectedly spikes and the number of objects exceeds your allocated boundary, FlyRLECCL safely halts processing and instantly returns <code>FLY_STATUS_STATS_BUFFER_TOO_SMALL</code>. Crucially, even when halting, the engine still writes the exact number of detected components to your <code>n_components</code> pointer. This transforms what is traditionally a fatal application crash into clean, actionable telemetry.</p>
+			<h3>Advanced Pipeline Strategies via Resume Mode</h3>
+			<p>Because <code>n_components</code> is always populated, system engineers can implement highly flexible, adaptive memory and processing strategies inside the hot loop:</p>
+			<ul>
+				<li><span class="text-bold">Cold-Start Allocation Tuning:</span> At application startup, architects can choose to allocate <span class="text-bold">zero memory</span> for statistics. The engine processes the initial frame, populates <code>n_components</code>, and allows the system to instantly allocate a buffer tailored either to the exact object count or to a tightly calculated safe margin.</li>
+				<li><span class="text-bold">Intelligent Frame Dropping:</span> In real-time video pipelines, an unexpected spike in components often signifies transient noise or an irrelevant artifact. By monitoring the frequency of <code>FLY_STATUS_STATS_BUFFER_TOO_SMALL</code> events, the pipeline can choose to simply drop isolated or rare anomalous frames without wasting CPU cycles on statistical extraction.</li>
+				<li><span class="text-bold">Zero-Allocation Scratchpad Routing:</span> If the processing pipeline maintains a pre-allocated generic fallback memory region (such as a shared <code>void*</code> scratchpad buffer of sufficient size), anomalies can be rerouted and processed inside this backup buffer instantly. This completely eliminates runtime re-allocations while ensuring that even extreme frame spikes are analyzed safely and deterministically.</li>
+				<li><span class="text-bold">Context-Aware Re-Allocation:</span>The telemetry provided by <code>n_components</code> allows for granular decision-making when a backup buffer is not available or when limits are breached:</li>
+				<ul>
+					<li><span class="text-bold">Slight Overflow:</span> If <code>n_components</code> only marginally exceeds the current buffer size, the pipeline can trigger a controlled re-allocation to a slightly larger buffer to accommodate the new baseline.</li>
+					<li><span class="text-bold">Extreme Spike:</span> If <code>n_components</code> reveals an impossibly high, anomalous number of objects (e.g., massive camera noise), the pipeline can block re-allocation entirely, log the event, and skip processing to protect the system from memory bloat.</li>
+				</ul>
+			</ul>
+			<p>By exposing these granular states, <span class="text-bold">Resume Mode</span> provides system engineers with the precise telemetry needed to build robust, flexible, adaptive, and highly deterministic processing pipelines without relying on rigid worst-case constraints or reallocation inside the hot loop.</p>
+		</section>
+		<section id="api" data-atg="" data-atid="" data-ate="">
+			<h2>Integration-Ready: Simple C99 API</h2>
+			<p>Integrating FlyRLECCL into your proprietary software or hardware pipeline takes less than an hour:</p>
+			<ul>
+				<li><span class="text-bold">Zero Dependencies:</span> No C++ runtime, no STL, no OpenCV overhead, no external library requirements.</li>
+				<li><span class="text-bold">Seamless Deployment:</span> Distributed as a clean C99 interface with pre-compiled binary modules (.lib, .a, .dll, .so) and lightweight header files.</li>
+				<li><span class="text-bold">Safety-Critical Design:</span> Built-in universal boundary checks (e.g., <code>FLY_STATUS_INVALID_SIZE</code>) ensure the engine never overflows or panics, fulfilling strict real-time safety requirements.</li>
+			</ul>
+			<h3>Simultaneous Multi-Module Linking (No Conflicts)</h3>
+			<ul>
+				<li><span class="text-bold">The Integration Flexibility:</span> The <span class="text-bold">Standard</span> and <span class="text-bold">Lite</span> editions (as well as all future algorithmic modules) are fully decoupled and engineered with strict namespace isolation. They do not conflict at the linker level and <span class="text-bold">can be linked together within the same host application executable</span>.</li>
+				<li>This allows a single multi-threaded firmware or software system to concurrently process different sensor streams—routing low-resolution or layout-constrained frames through the ultra-lean <span class="text-bold">Lite</span> engine while simultaneously feeding high-resolution data to the <span class="text-bold">Standard</span> core, with zero cross-talk or code-duplication overhead.</li>
+			</ul>
+		</section>
+		<section id="roadmap" data-atg="" data-atid="" data-ate="">
+			<h2>Project Roadmap</h2>
+			<ul>
+				<li><span class="text-bold">Short-Term Feature Expansion</span></li>
+				<ul>
+					<li><span class="text-bold">Additional Analytics:</span> Integration of <span class="text-bold">Topology pasport</span> for advanced shape analysis (e.g., Euler characteristic, hole counts, and structural hierarchy).</li>
+					<li><span class="text-bold">Topological Metrics:</span> Feature extraction to calculate the <span class="text-bold">Euler Characteristic</span>.</li>
+				</ul>
+			</ul>
+			<ul>
+				<li><span class="text-bold">Mid-Term Workflow Extension</span></li>
+				<ul>
+					<li><span class="text-bold">Chunk-Based Streaming:</span> Processing frames in 2-4 row batches to drastically minimize memory buffer height in ultra-low-latency pipeline environments.</li>
+				</ul>
+			</ul>
+			<ul>
+				<li><span class="text-bold">Long-Term Hardware Scaling</span> Optional hardware-accelerated execution paths optimized for AVX-512 and ARM NEON architectures.</li>
+				<ul>
+					<li><span class="text-bold">SIMD Vectorization:</span></li>
+					<li><span class="text-bold">Volumetric Analysis (3D & 3D+):</span> Expanding the core single-pass RLE logic into 3D space (Voxel Connectivity Analysis) for high-resolution CT/MRI scans and temporal data.</li>
+				</ul>
+			</ul>
+		</section>
+		<section id="licensing" data-atg="sections" data-atid="licensing" data-ate="view">
+			<h2>Commercial Licensing & Integration</h2>
+			<p>FlyRLECCL is distributed as optimized, pre-compiled binary modules (available for major architectures and embedded toolchains, including x86_64, ARM Cortex-A/M, and specialized DSPs).</p>
+			<p>Every hardware production scale, budgeting cycle, and compliance framework is unique to every enterprise, so to seamlessly align with your business logic, we offer flexible, tailor-made licensing structures instead of rigid, one-size-fits-all contracts.</p>
+			<h3>Available Licensing Frameworks</h3>
+			<ul>
+				<li><span class="text-bold">Royalty-Free Commercial Licenses (Fixed-Term or Perpetual):</span> Designed for high-volume production lines. This model grants unlimited deployment rights within the agreed product scope with zero per-device tracking or ongoing unit fees. Devices manufactured and shipped during the active license term retain permanent, irrevocable rights to use the embedded binaries.</li>
+				<li><span class="text-bold">Volume-Based / Per-Device Licensing:</span> An agile framework tailored for startups and specialized, low-to-medium volume hardware vendors. This model allows you to align software costs directly with your actual hardware shipment schedules, minimizing upfront capital expenditure.</li>
+				<li><span class="text-bold">Custom & Hybrid Licensing Models:</span> We are fully open to tailor-made commercial agreements that best fit your business infrastructure. Whether your project requires a mixed approach (e.g., a baseline annual license combined with volume-based scaling), site-wide corporate licensing, or exclusive single-line lockouts, we can structure a contract around your exact financial and operational constraints.</li>
+			</ul>
+			<h3>Comprehensive Integration Support</h3>
+			<p>Every commercial agreement is backed by engineering-focused support to ensure frictionless deployment:</p>
+			<ul>
+				<li>Direct compiler-compatibility patches and architectural optimization tuning.</li>
+				<li>Dedicated technical assistance during your system integration and pipeline prototyping phases.</li>
+				<li>Long-term maintenance updates covering critical bug fixes and stability benchmarks.</li>
+			</ul>
+			<p><span class="text-bold">Let’s build the right framework for your pipeline:</span></p>
+			<p>We adapt our agreements to your exact deployment scope—whether you are launching a single highly-specialized medical device line or deploying cross-platform smart camera arrays. Contact our licensing team to discuss your operational constraints, request a customized price quote, or align on a contract structure that fits your business model.</p>
+		</section>
+		<section id="evaluation" data-atg="sections" data-atid="evaluation" data-ate="view">
+			<h2>Evaluate FlyRLECCL on Hardware</h2>
+			<p>See the exact speedup on your target platform before writing a single line of code. We provide a lightweight, dependency-free CLI demonstration engine. Run it against your proprietary datasets and benchmark it side-by-side with your current pipeline.</p>
+			<h3>1. Request the Evaluation Binary or Static Module</h3>
+			<p>To test the core engine performance on your specific architecture (x86, ARM Cortex, or embedded RTOS), you can request a compiled CLI demo executable or a static library module under a time-limited <span class="text-bold">Trial Evaluation License</span> to benchmark it directly inside your application.</p>
+			<ul>
+				<li><span class="text-bold">Get the Evaluation Build:</span> <a href="mailto:trial@flyrleccl.com" data-atg="trial-email" data-ate="click contextmenu copy">trial@flyrleccl.com</a></li>
+				<li><span class="text-italic">Please specify your target CPU/OS, compiler environment, and preferred format (CLI Demo or Static Module) for accurate binary matching.</span></li>
+			</ul>
+			<h3>2. Integration & Technical Validation</h3>
+			<p>Already running the demo or need to map FlyRLECCL into your existing data pipeline? Connect directly with the core development architecture team to resolve alignment contracts, custom memory padding, or boundary behaviors.</p>
+			<ul>
+				<li><span class="text-bold">Technical Support:</span> <a href="mailto:dev@flyrleccl.com" data-atg="dev-email" data-ate="click contextmenu copy">dev@flyrleccl.com</a></li>
+			</ul>
+			<h3>3. Commercial Licensing</h3>
+			<p>Ready to deploy FlyRLECCL into production? Request production-ready SDK binary access tailored to your hardware target, get volume pricing structures, or discuss the best contract alignment for your business model—whether you require our <span class="text-bold">B2B Royalty-Free Licensing</span> for unlimited deployment, volume-scaled <span class="text-bold">Per-Device Licensing</span>, or another <span class="text-bold">Custom/Hybrid Licensing Models</span>.</p>
+			<ul>
+				<li><span class="text-bold">Licensing & Contracts:</span> <a href="mailto:licensing@flyrleccl.com" data-atg="licensing-email" data-ate="click contextmenu copy">licensing@flyrleccl.com</a></li>
+			</ul>
+		</section>
+		<!-- Окно Privacy Policy -->
+		<div id="privacy-modal" class="modal-overlay" data-atg="sections" data-atid="privacy" data-ate="view">
+			<section>
+			  <div class="modal-box">
+				<span class="close-modal-btn" id="close-privacy">&times;</span>
+				<div class="modal-scroll-content">
+					<h1>Privacy Policy</h1>
+					<p>Last updated: June 27, 2026</p>
+					<p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
+					<p>We use Your Personal Data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.</p>
+					<h2>Interpretation and Definitions</h2>
+					<h3>Interpretation</h3>
+					<p>The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
+					<h3>Definitions</h3>
+					<p>For the purposes of this Privacy Policy:</p>
+					<ul>
+					<li>
+					<p><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</p>
+					</li>
+					<li>
+					<p><strong>Affiliate</strong> means an entity that controls, is controlled by, or is under common control with a party, where &quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</p>
+					</li>
+					<li>
+					<p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Privacy Policy) refers to FlyRLECCL, Georgia.</p>
+					</li>
+					<li>
+					<p><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.</p>
+					</li>
+					<li>
+					<p><strong>Country</strong> refers to:  Georgia</p>
+					</li>
+					<li>
+					<p><strong>Device</strong> means any device that can access the Service such as a computer, a cell phone or a digital tablet.</p>
+					</li>
+					<li>
+					<p><strong>Personal Data</strong> (or &quot;Personal Information&quot;) is any information that relates to an identified or identifiable individual.</p>
+					<p>We use &quot;Personal Data&quot; and &quot;Personal Information&quot; interchangeably unless a law uses a specific term.</p>
+					</li>
+					<li>
+					<p><strong>Service</strong> refers to the Website.</p>
+					</li>
+					<li>
+					<p><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.</p>
+					</li>
+					<li>
+					<p><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</p>
+					</li>
+					<li>
+					<p><strong>Website</strong> refers to FlyRLECCL, accessible from <a href="https://flyrleccl.com" rel="external nofollow noopener" target="_blank">https://flyrleccl.com</a>.</p>
+					</li>
+					<li>
+					<p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p>
+					</li>
+					</ul>
+					<h2>Collecting and Using Your Personal Data</h2>
+					<h3>Types of Data Collected</h3>
+					<h4>Personal Data</h4>
+					<p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
+					<ul>
+					<li>Email address</li>
+					<li>First name and last name</li>
+					</ul>
+					<h4>Usage Data</h4>
+					<p>Usage Data is collected automatically when using the Service.</p>
+					<p>Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
+					<p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device's unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.</p>
+					<p>We may also collect information that Your browser sends whenever You visit Our Service or when You access the Service by or through a mobile device.</p>
+					<h4>Tracking Technologies and Cookies</h4>
+					<p>We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. Tracking technologies We use include beacons, tags, and scripts to collect and track information and to improve and analyze Our Service. The technologies We use may include:</p>
+					<ul>
+					<li><strong>Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of our Service.</li>
+					<li><strong>Web Beacons.</strong> Certain sections of our Service and our emails may contain small electronic files known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for example, to count users who have visited those pages or opened an email and for other related website statistics (for example, recording the popularity of a certain section and verifying system and server integrity).</li>
+					</ul>
+					<p>Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.</p>
+					<p>Where required by law, we use non-essential cookies (such as analytics, advertising, and remarketing cookies) only with Your consent. You can withdraw or change Your consent at any time using Our cookie preferences tool (if available) or through Your browser/device settings. Withdrawing consent does not affect the lawfulness of processing based on consent before its withdrawal.</p>
+					<p>We use both Session and Persistent Cookies for the purposes set out below:</p>
+					<ul>
+					<li>
+					<p><strong>Necessary / Essential Cookies</strong></p>
+					<p>Type: Session Cookies</p>
+					<p>Administered by: Us</p>
+					<p>Purpose: These Cookies are essential to provide You with services available through the Website and to enable You to use some of its features. They help to authenticate users and prevent fraudulent use of user accounts. Without these Cookies, the services that You have asked for cannot be provided, and We only use these Cookies to provide You with those services.</p>
+					</li>
+					<li>
+					<p><strong>Cookies Policy / Notice Acceptance Cookies</strong></p>
+					<p>Type: Persistent Cookies</p>
+					<p>Administered by: Us</p>
+					<p>Purpose: These Cookies identify if users have accepted the use of cookies on the Website.</p>
+					</li>
+					<li>
+					<p><strong>Functionality Cookies</strong></p>
+					<p>Type: Persistent Cookies</p>
+					<p>Administered by: Us</p>
+					<p>Purpose: These Cookies allow Us to remember choices You make when You use the Website, such as remembering your login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website.</p>
+					</li>
+					</ul>
+					<p>For more information about the cookies we use and your choices regarding cookies, please visit our Cookies Policy or the Cookies section of Our Privacy Policy.</p>
+					<h3>Use of Your Personal Data</h3>
+					<p>The Company may use Personal Data for the following purposes:</p>
+					<ul>
+					<li>
+					<p><strong>To provide and maintain our Service</strong>, including to monitor the usage of our Service.</p>
+					</li>
+					<li>
+					<p><strong>To manage Your Account:</strong> to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.</p>
+					</li>
+					<li>
+					<p><strong>For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.</p>
+					</li>
+					<li>
+					<p><strong>To deliver and support evaluation builds:</strong> To process Your technical requests, deliver the compiled demonstration software or trial modules, and provide direct architectural or integration support.</p>
+					</li>
+					<li>
+					<p><strong>To contact You:</strong> To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.</p>
+					</li>
+					<li>
+					<p><strong>To provide You</strong> with news, special offers, and general information about other goods, services and events which We offer that are similar to those that you have already purchased or inquired about unless You have opted not to receive such information.</p>
+					</li>
+					<li>
+					<p><strong>To manage Your requests:</strong> To attend and manage Your requests to Us.</p>
+					</li>
+					<li>
+					<p><strong>For business transfers:</strong> We may use Your Personal Data to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.</p>
+					</li>
+					<li>
+					<p><strong>For other purposes</strong>: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.</p>
+					</li>
+					</ul>
+					<p>We may share Your Personal Data in the following situations:</p>
+					<ul>
+					<li><strong>With Service Providers:</strong> We may share Your Personal Data with Service Providers to monitor and analyze the use of our Service,  to contact You.</li>
+					<li><strong>For business transfers:</strong> We may share or transfer Your Personal Data in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.</li>
+					<li><strong>With Affiliates:</strong> We may share Your Personal Data with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</li>
+					<li><strong>With business partners:</strong> We may share Your Personal Data with Our business partners to offer You certain products, services or promotions.</li>
+					<li><strong>With other users:</strong> If Our Service offers public areas, when You share Personal Data or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside.</li>
+					<li><strong>With Your consent</strong>: We may disclose Your Personal Data for any other purpose with Your consent.</li>
+					</ul>
+					<h3>Retention of Your Personal Data</h3>
+					<p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if We are required to retain Your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p>
+					<p>Where possible, We apply shorter retention periods and/or reduce identifiability by deleting, aggregating, or anonymizing data. Unless otherwise stated, the retention periods below are maximum periods (&quot;up to&quot;) and We may delete or anonymize data sooner when it is no longer needed for the relevant purpose. We apply different retention periods to different categories of Personal Data based on the purpose of processing and legal obligations:</p>
+					<ul>
+					<li>
+					<p>Account Information</p>
+					<ul>
+					<li>User Accounts: retained for the duration of your account relationship plus up to 24 months after account closure to handle any post-termination issues or resolve disputes.</li>
+					</ul>
+					</li>
+					<li>
+					<p>Customer Support Data</p>
+					<ul>
+					<li>Support tickets and correspondence: up to 24 months from the date of ticket closure to resolve follow-up inquiries, track service quality, and defend against potential legal claims</li>
+					<li>Chat transcripts: up to 24 months for quality assurance and staff training purposes.</li>
+					</ul>
+					</li>
+					<li>
+					<p>Usage Data</p>
+					<ul>
+					<li>
+					<p>Website analytics data (cookies, IP addresses, device identifiers): up to 24 months from the date of collection, which allows us to analyze trends while respecting privacy principles.</p>
+					</li>
+					<li>
+					<p>Server logs (IP addresses, access times): up to 24 months for security monitoring and troubleshooting purposes.</p>
+					</li>
+					</ul>
+					</li>
+					</ul>
+					<p>Usage Data is retained in accordance with the retention periods described above, and may be retained longer only where necessary for security, fraud prevention, or legal compliance.</p>
+					<p>We may retain Personal Data beyond the periods stated above for different reasons:</p>
+					<ul>
+					<li>Legal obligation: We are required by law to retain specific data (e.g., financial records for tax authorities).</li>
+					<li>Legal claims: Data is necessary to establish, exercise, or defend legal claims.</li>
+					<li>Your explicit request: You ask Us to retain specific information.</li>
+					<li>Technical limitations: Data exists in backup systems that are scheduled for routine deletion.</li>
+					</ul>
+					<p>You may request information about how long We will retain Your Personal Data by contacting Us.</p>
+					<p>When retention periods expire, We securely delete or anonymize Personal Data according to the following procedures:</p>
+					<ul>
+					<li>Deletion: Personal Data is removed from Our systems and no longer actively processed.</li>
+					<li>Backup retention: Residual copies may remain in encrypted backups for a limited period consistent with our backup retention schedule and are not restored except where necessary for security, disaster recovery, or legal compliance.</li>
+					<li>Anonymization: In some cases, We convert Personal Data into anonymous statistical data that cannot be linked back to You. This anonymized data may be retained indefinitely for research and analytics.</li>
+					</ul>
+					<h3>Transfer of Your Personal Data</h3>
+					<p>Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ from those from Your jurisdiction.</p>
+					<p>Where required by applicable law, We will ensure that international transfers of Your Personal Data are subject to appropriate safeguards and supplementary measures where appropriate. The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information.</p>
+					<h3>Delete Your Personal Data</h3>
+					<p>You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.</p>
+					<p>Our Service may give You the ability to delete certain information about You from within the Service.</p>
+					<p>You may update, amend, or delete Your information at any time by signing in to Your Account, if you have one, and visiting the account settings section that allows you to manage Your personal information. You may also contact Us to request access to, correct, or delete any Personal Data that You have provided to Us.</p>
+					<p>Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so.</p>
+					<h3>Disclosure of Your Personal Data</h3>
+					<h4>Business Transactions</h4>
+					<p>If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy.</p>
+					<h4>Law enforcement</h4>
+					<p>Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).</p>
+					<h4>Other legal requirements</h4>
+					<p>The Company may disclose Your Personal Data in the good faith belief that such action is necessary to:</p>
+					<ul>
+					<li>Comply with a legal obligation</li>
+					<li>Protect and defend the rights or property of the Company</li>
+					<li>Prevent or investigate possible wrongdoing in connection with the Service</li>
+					<li>Protect the personal safety of Users of the Service or the public</li>
+					<li>Protect against legal liability</li>
+					</ul>
+					<h3>Security of Your Personal Data</h3>
+					<p>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially reasonable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
+					<h2>International Users and Rights (GDPR & CCPA Compliance)</h2>
+					<p>We process your personal data (such as your name and email address) based on your explicit consent when you contact us. Regardless of your location, you retain the right to access, correct, or request the permanent deletion of any personal data you have provided.</p>
+					<p>If you are a resident of the European Economic Area (EEA) or California, we guarantee that we do not "sell" your personal information, and we process all data in strict compliance with GDPR and CCPA principles. To exercise your rights, please contact us at your designated privacy email.</p>
+					<h2>Children's Privacy</h2>
+					<p>Our Service does not address anyone under the age of 16. We do not knowingly collect personally identifiable information from anyone under the age of 16. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 16 without verification of parental consent, We take steps to remove that information from Our servers.</p>
+					<p>If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent's consent before We collect and use that information.</p>
+					<h2>Links to Other Websites</h2>
+					<p>Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.</p>
+					<p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</p>
+					<h2>Changes to this Privacy Policy</h2>
+					<p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
+					<p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p>
+					<p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+					<h2>Contact Us</h2>
+					<p>If you have any questions about this Privacy Policy, You can contact us by email: <a href="mailto:compliance@flyrleccl.com" data-atg="compliance-email" data-atid="privacy-modal" data-ate="click contextmenu copy">compliance@flyrleccl.com</a></p>
+				</div>
+			  </div>
+			</section>
+		</div>
+
+		<!-- Окно Terms of Service -->
+		<div id="terms-modal" class="modal-overlay" data-atg="sections" data-atid="terms" data-ate="view">
+			<section>
+				<div class="modal-box">
+					<span class="close-modal-btn" id="close-terms">&times;</span>
+					<div class="modal-scroll-content">
+						<h1>Terms of Service</h1>
+						<p>Last updated: June 27, 2026</p>
+						<p>Welcome to FlyRLECCL (accessible via <a href="https://flyrleccl.com" rel="external nofollow noopener" target="_blank">https://flyrleccl.com</a>). By accessing our Website, requesting evaluation binaries, or communicating with our team, you agree to comply with and be bound by the following Terms of Service. If you do not agree with these terms, please do not use our Website or request our software modules.</p>
+
+						<h2>1. Scope of the Website</h2>
+						<p>This Website serves strictly as an informational and commercial presentation platform for the FlyRLECCL performance software library. No automated e-commerce, user account registration, or direct financial transactions are processed through this Website.</p>
+
+						<h2>2. Intellectual Property Rights</h2>
+						<p>All content on this Website—including but not limited to text, benchmark data, documentation snippets, architectural descriptions, graphics, and logos—is the exclusive proprietary property of FlyRLECCL and is protected by international copyright laws. You may not copy, redistribute, or reverse-engineer any materials or demonstration modules provided here without explicit written authorization.</p>
+
+						<h2>3. Evaluation and Trial Modules</h2>
+						<p>Any pre-compiled demonstration software, CLI evaluation engines, or time-limited trial modules requested via our contact emails are provided strictly for internal testing and performance benchmarking purposes. 
+						<ul>
+						  <li>These evaluation builds are <strong>strictly non-production</strong> and may not be deployed in commercial hardware, medical devices, or live systems.</li>
+						  <li>Commercial deployment requires a separate, mutually signed License Agreement.</li>
+						</ul>
+						</p>
+
+						<h2>4. Disclaimer of Warranties</h2>
+						<p>This Website and all downloadable demonstration materials or information are provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis, without warranties of any kind, either express or implied. FlyRLECCL does not guarantee that the Website or binary downloads will be completely error-free, uninterrupted, or compatible with every specific hardware toolchain outside of agreed evaluation frameworks.</p>
+
+						<h2>5. Limitation of Liability</h2>
+						<p>To the maximum extent permitted by applicable law, in no event shall FlyRLECCL or its developers be liable for any direct, indirect, incidental, special, or consequential damages arising out of the use or inability to use the Website or evaluation builds, even if advised of the possibility of such damages.</p>
+
+						<h2>6. Commercial Licensing & Contract Precedence</h2>
+						<p>Any formal B2B licensing agreements, volume pricing, royalty-free structures, or hybrid contracts will be governed strictly by a standalone, executed <strong>Commercial License Agreement</strong> signed between FlyRLECCL and the client company. In the event of any conflict between these Website Terms and the signed commercial contract, the commercial contract shall take absolute precedence.</p>
+
+						<h2>7. Governing Law</h2>
+						<p>These Terms shall be governed by and construed in accordance with the laws of Georgia, without regard to its conflict of law provisions.</p>
+
+						<h2>8. Contact Us</h2>
+						<p>If you have any questions regarding these Terms of Service, please contact us at: <a href="mailto:compliance@flyrleccl.com" data-atg="compliance-email" data-atid="terms-modal" data-ate="click contextmenu copy">compliance@flyrleccl.com</a></p>
+					</div>
+				</div>
+			</section>
+		</div>
+	</main>
+	<footer class="site-footer">
+		<div class="footer-container">
+			<div class="footer-copyright">
+				<span>&copy; 2026 FlyRLECCL. All rights reserved.</span>
+			</div>
+			<nav>
+				<span class="footer-links">
+					<a href="#" id="open-privacy">Privacy Policy</a>
+				</span>
+				<span class="footer-links">
+					<a href="#" id="open-terms">Terms of Service</a>
+				</span>
+			</nav>
+	  </div>
+	</footer>
+
+	<script src="bottom.js"></script>
+
+</body>
+</html>

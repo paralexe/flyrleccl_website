@@ -1,0 +1,256 @@
+body {
+	top: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	line-height: 1.2;
+	color: #333;
+	background-color: #f8f9fa;
+	max-width: 800px;
+	margin: 0px auto;
+	padding: 0 10px;
+}
+code {
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    }
+a { color: #0066cc; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #000000;
+	padding: 1px;
+}
+
+section {
+	border-top: 1px solid #000000;
+}
+
+footer {
+}
+
+h1 {
+	text-align: center;
+	line-height: 0.0;
+}
+h4 {
+	text-align: center;
+	line-height: 0.0;
+}
+h5 {
+	text-align: center;
+	font-weight: normal;
+	font-size: 1.0rem;
+	line-height: 0.0;
+	margin-top: 1.0rem;
+	margin-bottom: 1.0rem;
+}
+
+tbody tr > :first-child {
+	text-align: left;
+}
+
+img {
+	width: 100%
+}
+			
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px); /* Легкое размытие для солидности */
+}
+
+/* Сама коробка с текстом */
+.modal-box {
+  background-color: #ffffff;
+  margin: 5vh auto;
+  padding: 30px;
+  width: 90%; max-width: 850px;
+  height: 80vh;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Контейнер для скролла внутри окна */
+.modal-scroll-content {
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 15px;
+  color: #333; /* Темный читаемый текст на белом фоне */
+}
+
+/* Кнопка закрытия (крестик) */
+.close-modal-btn {
+  position: absolute; right: 20px; top: 15px;
+  font-size: 32px; font-weight: bold; color: #aaa;
+  cursor: pointer; z-index: 10000;
+}
+.close-modal-btn:hover { color: #000; }
+
+.footer-container {
+    display: flex; /* Включаем Flexbox */
+    justify-content: space-between; /* Располагает блоки по разным краям */
+    width: 100%; /* Задайте нужную ширину */
+	font-size: 0.8rem;
+}
+
+.footer-links{
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.5);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 0.8rem;
+  padding: 3px 3px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.footer-copyright {
+  padding: 3px 3px;
+}
+
+<style>
+	table {
+		width: 100%;
+	}
+	table, th, td {
+		border: 1px solid #a8a9aa;
+		border-collapse: collapse;
+	}
+	table td {
+		line-height: 2;
+		padding: 1; /* рекомендуется убрать стандартные отступы */
+	}
+	.col-1 { width: 20%; } /* Первая колонка — 20% */
+	.col-2 { width: 40%; } /* Вторая колонка — 50% */
+	.col-3 { width: 40%; } /* Третья колонка — 30% */
+</style>
+
+
+.mobile-nav {
+  position: relative;
+  font-family: sans-serif;
+  background-color: #333;
+}
+
+.nav-header {
+  display: flex;
+  align-items: center; /* Центрируем по вертикали */
+  padding: 10px 10px;
+  position: relative;  /* Чтобы относительно нее позиционировать другие элементы */
+}
+
+/* ЗАГОЛОВОК НАХОДИТСЯ СТРОГО ПО ЦЕНТРУ */
+.nav-header h1 {
+  margin: 0 auto;       /* МАГИЯ: auto с двух сторон выравнивает текст строго по центру */
+  text-align: center;
+}
+
+
+/* 1. ПОЛНОСТЬЮ СКРЫВАЕМ ЧЕКБОКС */
+.burger-toggle {
+  display: none;
+}
+
+/* 2. СТИЛИЗУЕМ КНОПКУ-БУРГЕР (3 полоски) */
+.burger-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+  z-index: 0;
+  position: absolute;  /* Вырываем из общего потока, чтобы она не «теснила» H1 */
+  right: 10px;         /* Прижимаем к правому краю шапки */
+}
+
+/* Рисуем полоски внутри кнопки */
+.burger-button span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #111;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 3. СТИЛИЗУЕМ ВЫПАДАЮЩЕЕ МЕНЮ */
+.menu-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%; /* Появляется сразу под шапкой */
+  left: 0;
+  width: 100%;
+  background-color: #444;
+  
+  /* Эффект скрытия (высота 0 и скрытый контент) */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out; 
+}
+
+/* Стили ссылок внутри меню */
+.menu-links li a {
+  display: block;
+  padding: 5px 5px;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid #555;
+}
+
+.menu-links li a:hover {
+  background-color: #555;
+}
+
+
+/* --- МАГИЯ CSS: АКТИВАЦИЯ ПРИ НАЖАТИИ --- */
+
+/* Когда чекбокс ЗАГОРЕЛСЯ (:checked), 
+   мы находим соседний элемент .menu-links и меняем ему max-height */
+.burger-toggle:checked ~ .menu-links {
+  max-height: 300px; /* Достаточная высота, чтобы вместить пункты */
+}
+
+/* БОНУС: Анимация превращения бургера в крестик при клике */
+.burger-toggle:checked + .burger-button span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.burger-toggle:checked + .burger-button span:nth-child(2) {
+  opacity: 0; /* Средняя полоска исчезает */
+}
+
+.burger-toggle:checked + .burger-button span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
