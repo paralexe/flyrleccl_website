@@ -23,9 +23,17 @@ document.head.appendChild(gtagScript);
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
+	// Helper kebab-case to camelCase
+	function kebabToCamel(str) {
+		return str.replace(/-([a-z0-9])/gi, (_, letter) => letter.toUpperCase());
+	}
+	
 	// 1. function to generate eventName from elementName & actionType and call GA4 function gtag()
 	function callGtag(elementGroup, actionType, extraParams = {}) {
-		const eventName = `${elementGroup}_${actionType}`;
+		const camelElementGroup = kebabToCamel(elementGroup);
+		const camelActionType = kebabToCamel(actionType);
+		
+		const eventName = `${camelElementGroup}_${camelActionType}`;
 		
 		const atid = extraParams.atid || elementGroup;
 		delete extraParams.atid;
